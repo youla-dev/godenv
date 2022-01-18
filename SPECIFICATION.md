@@ -69,10 +69,16 @@ value_with_double_quotes="A value between double quotation marks."
 
 - If a value is empty, it's interpreted as an empty string ''.
 - If a line lacks `=` character, the value is interpreted as an empty string ''.
+- If a file contains 2 or more equal `<name>`-s, then the last value is used.
 
 ```dotenv
 # Value is an empty string ''
 VARIABLE_WITH_EMPTY_VALUE=
 # Value is an empty string '' 
 VARIABLE_WITH_NO_EQUAL_CHAR
+
+# Duplicated variables
+VAR_NAME=value1
+# The result is "value2" 
+VAR_NAME=value2
 ```
