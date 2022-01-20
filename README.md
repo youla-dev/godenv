@@ -2,7 +2,7 @@
 
 ## Current state
 
-⚠️ The repository is in active development state. It's not rready to use yet.
+⚠️ The repository is in active development state. It's not ready to use yet.
 
 ## Pronunciation
 
