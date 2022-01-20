@@ -69,7 +69,7 @@ value_with_double_quotes="A value between double quotation marks."
 
 - If a value is empty, it's interpreted as an empty string ''.
 - If a line lacks `=` character, the value is interpreted as an empty string ''.
-- If a file contains 2 or more equal `<name>`-s, then the last value is used.
+- If a file contains 2 or more identical `<name>`-s, then the last value is used.
 
 ```dotenv
 # Value is an empty string ''
