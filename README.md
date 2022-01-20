@@ -1,5 +1,9 @@
 # godenv — a proper package to read `.env` files
 
+## Current state
+
+⚠️ The repository is in active development state. It's not rready to use yet.
+
 ## Pronunciation
 
 `godenv` stands for go-dot-env. It is pronounced as `goh denv`, not as `gahd env`.  
