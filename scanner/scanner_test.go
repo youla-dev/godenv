@@ -329,3 +329,63 @@ func TestScanner_NextToken_Illegal(t *testing.T) {
 		})
 	}
 }
+
+func TestScanner_NextToken(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    string
+		expected []token.Token
+	}{
+		{
+			name: "illegal value",
+			input: `x="yxc
+`,
+			expected: []token.Token{
+				{Type: token.Identifier, Literal: "x"},
+				{Type: token.Assign, Literal: token.Assign.String()},
+				{Type: token.Illegal, Literal: "yxc"},
+				{Type: token.NewLine, Literal: "\n"},
+				{Type: token.EOF, Literal: token.EOF.String()},
+			},
+		},
+		{
+			name: "naked value",
+			input: `x=yxc
+`,
+			expected: []token.Token{
+				{Type: token.Identifier, Literal: "x"},
+				{Type: token.Assign, Literal: token.Assign.String()},
+				{Type: token.Value, Literal: "yxc"},
+				{Type: token.NewLine, Literal: "\n"},
+				{Type: token.EOF, Literal: token.EOF.String()},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			sc := scanner.New(tt.input)
+
+			i := 0
+			for {
+				actual := sc.NextToken()
+				expected := tt.expected[i]
+
+				assert.Equal(t, expected.Type, actual.Type)
+				assert.Equal(t, expected.Literal, actual.Literal)
+
+				if actual.Type == token.EOF {
+					break
+				}
+
+				i++
+			}
+		})
+	}
+}

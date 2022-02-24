@@ -42,23 +42,23 @@ func New(input string) *Scanner {
 //
 // If the returned token is token.Illegal, the literal string is the offending character.
 func (s *Scanner) NextToken() token.Token {
-	defer s.next()
-
 	switch s.ch {
 	case eof:
 		return token.New(token.EOF, s.offset)
-	case ' ', '\t', '\r', '\v', '\f':
-		return token.NewWithLiteral(token.Space, string(s.ch), s.offset)
 	case '\n':
 		return s.scanNewLine()
+	case ' ', '\t', '\r', '\v', '\f':
+		defer s.next()
+		return token.NewWithLiteral(token.Space, string(s.ch), s.offset)
 	case '=':
+		defer s.next()
 		return token.New(token.Assign, s.offset)
 	case '#':
 		return s.scanComment()
 	case '"':
-		return s.scanValue()
+		return s.scanQuotedValue(token.Value, s.ch)
 	case '\'':
-		return s.scanRawValue()
+		return s.scanQuotedValue(token.RawValue, s.ch)
 	default:
 		switch prev := s.prev(); prev {
 		case '\n', bom:
@@ -66,7 +66,7 @@ func (s *Scanner) NextToken() token.Token {
 				return s.scanIdentifier()
 			}
 		case '=':
-			return s.scanNakedValue()
+			return s.scanUnquotedValue()
 		}
 		return s.scanIllegalRune()
 	}
@@ -97,7 +97,6 @@ func (s *Scanner) scanIdentifier() token.Token {
 }
 
 func (s *Scanner) scanComment() token.Token {
-	// the # sign is already consumed
 	start := s.offset
 
 	for !(isEOF(s.ch) || isNewLine(s.ch)) {
@@ -110,89 +109,50 @@ func (s *Scanner) scanComment() token.Token {
 }
 
 func (s *Scanner) scanIllegalRune() token.Token {
+	literal := string(s.ch)
+	offset := s.offset
 	s.next()
 
-	return token.NewWithLiteral(token.Illegal, string(s.prev()), s.offset)
+	return token.NewWithLiteral(token.Illegal, literal, offset)
 }
 
-func (s *Scanner) scanRawValue() token.Token {
-	// the opening quote is already consumed
-	offs := s.offset + 1
-	tok := token.RawValue
-
-	for {
-		s.next()
-		ch := s.ch
-		if isEOF(ch) || isNewLine(ch) {
-			tok = token.Illegal
-			break
-		}
-		if ch == '\'' {
-			break
-		}
-	}
-
-	lit := s.input[offs:s.offset]
-
-	return token.NewWithLiteral(tok, lit, s.offset)
-}
-
-func (s *Scanner) scanNakedValue() token.Token {
-	offs := s.offset
-	tok := token.Value
-
-	for {
-		if isEOF(s.ch) || isNewLine(s.ch) {
-			break
-		}
-		if s.ch == '\\' {
-			if !s.scanEscape('"') {
-				tok = token.Illegal
-			}
-		}
-		s.next()
-	}
-
-	lit := s.input[offs:s.offset]
-
-	return token.NewWithLiteral(tok, lit, s.offset)
-}
-
-func (s *Scanner) scanValue() token.Token {
-	// '"' opening already consumed
-	s.next()
+func (s *Scanner) scanUnquotedValue() token.Token {
 	start := s.offset
-	tok := token.Value
 
-	for {
-		if isEOF(s.ch) || isNewLine(s.ch) {
-			tok = token.Illegal
-			break
-		}
-		if s.ch == '"' {
-			break
-		}
-		if s.ch == '\\' {
-			if !s.scanEscape('"') {
-				tok = token.Illegal
-			}
-		}
+	for !isEOF(s.ch) && !isNewLine(s.ch) {
 		s.next()
 	}
 
 	lit := s.input[start:s.offset]
 
-	return token.NewWithLiteral(tok, lit, s.offset)
+	return token.NewWithLiteral(token.Value, lit, s.offset)
 }
 
-func (s *Scanner) scanEscape(quote rune) bool {
-	switch s.ch {
-	case 'a', 'b', 'f', 'n', 'r', 't', 'v', '\\', quote:
+func (s *Scanner) scanQuotedValue(tType token.Type, quote rune) token.Token {
+	// opening quote already consumed
+	s.next()
+	start := s.offset
+
+	for {
+		if isEOF(s.ch) || isNewLine(s.ch) {
+			// TODO (titusjaka): return human-readable error instead
+			tType = token.Illegal
+			break
+		}
+		if s.ch == quote {
+			break
+		}
 		s.next()
-		return true
-	default:
-		return false
 	}
+
+	offset := s.offset
+	lit := s.input[start:offset]
+
+	if s.ch == quote {
+		s.next()
+	}
+
+	return token.NewWithLiteral(tType, lit, offset)
 }
 
 // ========================================================================
@@ -230,15 +190,6 @@ func (s *Scanner) prev() rune {
 	default:
 		return eof
 	}
-}
-
-func (s *Scanner) peek() rune {
-	if s.peekOffset < len(s.input) {
-		r, _ := s.scanRune(s.peekOffset)
-		return r
-	}
-
-	return eof
 }
 
 // Reads a single Unicode character and returns the rune and its width in bytes.
