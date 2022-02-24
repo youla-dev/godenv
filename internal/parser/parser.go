@@ -4,8 +4,8 @@ package parser
 import (
 	"fmt"
 
-	"github.com/youla-dev/godenv/ast"
-	"github.com/youla-dev/godenv/token"
+	"github.com/youla-dev/godenv/internal/ast"
+	"github.com/youla-dev/godenv/internal/token"
 )
 
 // Scanner converts a sequence of characters into a sequence of tokens.

@@ -5,7 +5,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/youla-dev/godenv/token"
+	"github.com/youla-dev/godenv/internal/token"
 )
 
 const (

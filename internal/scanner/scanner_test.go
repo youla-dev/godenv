@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/youla-dev/godenv/scanner"
-	"github.com/youla-dev/godenv/token"
+	"github.com/youla-dev/godenv/internal/scanner"
+	"github.com/youla-dev/godenv/internal/token"
 )
 
 func TestScanner_NextToken_Trivial(t *testing.T) {

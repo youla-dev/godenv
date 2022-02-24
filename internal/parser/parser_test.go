@@ -6,9 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/youla-dev/godenv/ast"
-	"github.com/youla-dev/godenv/parser"
-	"github.com/youla-dev/godenv/scanner"
+	"github.com/youla-dev/godenv/internal/ast"
+	"github.com/youla-dev/godenv/internal/parser"
+	"github.com/youla-dev/godenv/internal/scanner"
 )
 
 func TestParser_Parse(t *testing.T) {
