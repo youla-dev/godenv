@@ -130,7 +130,6 @@ func TestParser_Parse(t *testing.T) {
 					},
 				},
 			},
-
 			{
 				name:  "newlines in quoted strings",
 				input: `FOO="bar\nbaz"`,
@@ -138,7 +137,19 @@ func TestParser_Parse(t *testing.T) {
 					Statements: []ast.Statement{
 						&ast.AssignStatement{
 							Name:  "FOO",
-							Value: "bar\\nbaz",
+							Value: "bar\nbaz",
+						},
+					},
+				},
+			},
+			{
+				name:  "newlines in naked strings",
+				input: `FOO=bar\nbaz`,
+				expected: &ast.FileStatement{
+					Statements: []ast.Statement{
+						&ast.AssignStatement{
+							Name:  "FOO",
+							Value: "bar\nbaz",
 						},
 					},
 				},

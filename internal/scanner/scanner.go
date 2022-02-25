@@ -2,10 +2,19 @@ package scanner
 
 import (
 	"strconv"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 
 	"github.com/youla-dev/godenv/internal/token"
+)
+
+var escaper = strings.NewReplacer(
+	`\n`, "\n",
+	`\t`, "\t",
+	`\r`, "\r",
+	`\v`, "\v",
+	`\f`, "\f",
 )
 
 const (
@@ -123,7 +132,7 @@ func (s *Scanner) scanUnquotedValue() token.Token {
 		s.next()
 	}
 
-	lit := s.input[start:s.offset]
+	lit := escape(s.input[start:s.offset])
 
 	return token.NewWithLiteral(token.Value, lit, s.offset)
 }
@@ -147,6 +156,10 @@ func (s *Scanner) scanQuotedValue(tType token.Type, quote rune) token.Token {
 
 	offset := s.offset
 	lit := s.input[start:offset]
+
+	if tType == token.Value {
+		lit = escape(lit)
+	}
 
 	if s.ch == quote {
 		s.next()
@@ -246,3 +259,7 @@ func isEOF(r rune) bool {
 // ------------------------------------------------------------------------
 
 func lower(r rune) rune { return ('a' - 'A') | r } // returns lower-case r if r is an ASCII letter
+
+func escape(s string) string {
+	return escaper.Replace(s)
+}

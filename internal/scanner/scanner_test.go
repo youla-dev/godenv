@@ -104,9 +104,9 @@ func TestScanner_NextToken_Trivial(t *testing.T) {
 		},
 		{
 			name:              "double quoted value with escaped new line",
-			input:             `"valid value \n"`,
+			input:             `"valid value\n"`,
 			expectedTokenType: token.Value,
-			expectedLiteral:   `valid value \n`,
+			expectedLiteral:   "valid value\n",
 		},
 		{
 			name:              "single quoted value",
@@ -258,7 +258,7 @@ func TestScanner_NextToken_Naked_Value(t *testing.T) {
 			name:              "valid assignment with escaped new line",
 			input:             `=valid value \n`,
 			expectedTokenType: token.Value,
-			expectedLiteral:   `valid value \n`,
+			expectedLiteral:   "valid value \n",
 		},
 	}
 	for _, tt := range tests {
