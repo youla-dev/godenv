@@ -9,7 +9,7 @@ import (
 	"github.com/youla-dev/godenv/internal/scanner"
 )
 
-// Parse reads an env file from io.Reader, returning a map of keys and values
+// Parse reads an env file from io.Reader, returning a map of keys and values.
 func Parse(r io.Reader) (map[string]string, error) {
 	input, err := io.ReadAll(r)
 	if err != nil {
