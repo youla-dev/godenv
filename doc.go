@@ -27,12 +27,12 @@
 //
 // We took inspiration from the godotenv (https://github.com/joho/godotenv)
 // repository. The goal we pursued was to write a parser without using regular
-// expressions but with lexer/parser approach.
+// expressions but with a lexer/parser approach.
 //
 // The current specification of .env files format is listed in SPECIFICATION.md
 // (https://github.com/youla-dev/godenv/blob/main/SPECIFICATION.md).
 //
-// If you are curious in learning more about the approach, see the following links:
+// If you are curious about learning more about the approach, see the following links:
 //
 //   - https://en.wikipedia.org/wiki/Abstract_syntax_tree
 //   - https://en.wikipedia.org/wiki/Lexical_analysis
