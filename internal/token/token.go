@@ -25,6 +25,7 @@ const (
 	NewLine    // A new line symbol (\n)
 )
 
+// nolint:gochecknoglobals
 var tokens = [...]string{
 	Illegal: "Illegal",
 	EOF:     "EOF",

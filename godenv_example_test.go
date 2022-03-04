@@ -3,24 +3,11 @@ package godenv_test
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/youla-dev/godenv"
 )
 
 func ExampleParse() {
-	f, err := os.Open(".env")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	vars, err := godenv.Parse(f)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(vars)
-
 	envContent := `VARIABLE_1='This is variable 1'
 # This is comment
 VARIABLE_2="This is variable 2"
