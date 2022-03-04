@@ -1,0 +1,48 @@
+---
+name: Run CI on push
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - main
+  pull_request:
+jobs:
+  golangci-lint:
+    strategy:
+      matrix:
+        go:
+          - 1.13
+          - 1.14
+          - 1.15
+          - 1.16
+          - 1.17
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+      - name: lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+
+  tests:
+    strategy:
+      matrix:
+        go:
+          - 1.13
+          - 1.14
+          - 1.15
+          - 1.16
+          - 1.17
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Run tests
+        run: make test

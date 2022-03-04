@@ -9,6 +9,7 @@ import (
 	"github.com/youla-dev/godenv/internal/token"
 )
 
+// nolint:gochecknoglobals // TODO (titusjaka): rewrite this code in future.
 var escaper = strings.NewReplacer(
 	`\n`, "\n",
 	`\t`, "\t",
