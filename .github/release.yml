@@ -10,11 +10,11 @@ changelog:
       labels:
         - enhancement
     - title: Bug Fixes 🐞
-        labels:
-          - bug
+      labels:
+        - bug
     - title: Documentation Improvements 📚
-        labels:
-          - documentation
+      labels:
+        - documentation
     - title: Other Changes 👀
       labels:
         - "*"
