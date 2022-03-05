@@ -19,7 +19,7 @@ jobs:
           - 1.17
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go }}
@@ -39,7 +39,7 @@ jobs:
           - 1.17
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Go
         uses: actions/setup-go@v2
         with:
