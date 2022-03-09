@@ -15,8 +15,8 @@ Godenv is a tiny package that reads those .env files.
 
 ## Motivation
 
-We took inspiration from the [godotenv] repository. The goal we pursued was to write a parser
-without using regular expressions but with a lexer/parser approach.
+We took inspiration from the [godotenv] repository. We aimed at creating a parser without using
+regular expressions but with a lexer/parser approach.
 
 If you are curious about learning more about the approach, see the following links:
 
