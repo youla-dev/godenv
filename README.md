@@ -3,6 +3,9 @@
 [![codecov](https://codecov.io/gh/youla-dev/godenv/branch/main/graph/badge.svg?token=7A6DTWE9BK)](https://codecov.io/gh/youla-dev/godenv)
 [![GitHub license](https://img.shields.io/github/license/youla-dev/godenv)](https://github.com/youla-dev/godenv/blob/main/LICENSE)
 [![CI](https://github.com/youla-dev/godenv/actions/workflows/push.yml/badge.svg)](https://github.com/youla-dev/godenv/actions/workflows/push.yml)
+
+![1280x640](https://user-images.githubusercontent.com/5277948/157644593-4a4040b2-028b-4dd9-a724-69146a79be1d.jpg)
+
 # godenv — a proper package to read `.env` files
 
 [The Twelve-Factor App Manifest] promotes using environment variables as the only configuration
